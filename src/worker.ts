@@ -22,7 +22,15 @@ async function avpFetch(
     init.body = JSON.stringify(options.body);
   }
   const resp = await ctx.http.fetch(url, init);
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => "");
+    throw new Error(`AVP API ${init.method} ${path} returned ${resp.status}: ${text}`);
+  }
   return resp.json();
+}
+
+function encodeDid(did: string): string {
+  return encodeURIComponent(did);
 }
 
 const plugin = definePlugin({
@@ -55,7 +63,7 @@ const plugin = definePlugin({
         const config = await getConfig();
 
         try {
-          const rep = await avpFetch(ctx, config, `/v1/reputation/${did}`);
+          const rep = await avpFetch(ctx, config, `/v1/reputation/${encodeDid(did)}`);
           return {
             content: `Reputation for ${did}: score=${rep.score}, confidence=${rep.confidence}, ${rep.interpretation}`,
             data: {
@@ -93,14 +101,21 @@ const plugin = definePlugin({
         const threshold = min_score ?? config.minDelegationScore;
 
         try {
-          const rep = await avpFetch(ctx, config, `/v1/reputation/${did}`);
+          const rep = await avpFetch(ctx, config, `/v1/reputation/${encodeDid(did)}`);
           const score = rep.score ?? 0.0;
           const confidence = rep.confidence ?? 0.0;
-          const shouldDelegate = score >= threshold && confidence > 0.1;
+          const scorePassed = score >= threshold;
+          const confidencePassed = confidence > 0.1;
+          const shouldDelegate = scorePassed && confidencePassed;
 
-          const reason = shouldDelegate
-            ? `Score ${score.toFixed(2)} >= ${threshold.toFixed(2)} threshold, confidence ${confidence.toFixed(2)}`
-            : `Score ${score.toFixed(2)} < ${threshold.toFixed(2)} threshold or low confidence (${confidence.toFixed(2)})`;
+          let reason: string;
+          if (shouldDelegate) {
+            reason = `Score ${score.toFixed(2)} >= ${threshold.toFixed(2)} threshold, confidence ${confidence.toFixed(2)}`;
+          } else if (!scorePassed) {
+            reason = `Score ${score.toFixed(2)} < ${threshold.toFixed(2)} threshold`;
+          } else {
+            reason = `Low confidence (${confidence.toFixed(2)}) despite score ${score.toFixed(2)} >= ${threshold.toFixed(2)}`;
+          }
 
           return {
             content: shouldDelegate
@@ -191,14 +206,23 @@ const plugin = definePlugin({
       async (params, runCtx) => {
         const { dids } = params as { dids: string[] };
         const config = await getConfig();
+
+        if (dids.length === 0) {
+          return {
+            content: "No agents to evaluate — empty DID list",
+            data: { team_size: 0, average_score: 0, lowest_score: 0, lowest_agent: "", agents: [] },
+          };
+        }
+
         const results: any[] = [];
+        let successCount = 0;
         let totalScore = 0;
-        let lowestScore = 1.0;
+        let lowestScore = Infinity;
         let lowestAgent = "";
 
         for (const did of dids) {
           try {
-            const rep = await avpFetch(ctx, config, `/v1/reputation/${did}`);
+            const rep = await avpFetch(ctx, config, `/v1/reputation/${encodeDid(did)}`);
             const score = rep.score ?? 0.0;
             results.push({
               did,
@@ -206,22 +230,28 @@ const plugin = definePlugin({
               confidence: rep.confidence ?? 0.0,
               interpretation: rep.interpretation ?? "unknown",
             });
+            successCount++;
             totalScore += score;
             if (score < lowestScore) {
               lowestScore = score;
               lowestAgent = did;
             }
           } catch (err) {
-            results.push({ did, score: 0, confidence: 0, error: String(err) });
+            results.push({ did, score: null, confidence: null, error: String(err) });
           }
         }
 
-        const avg = dids.length > 0 ? totalScore / dids.length : 0;
+        const avg = successCount > 0 ? totalScore / successCount : 0;
+        if (lowestScore === Infinity) {
+          lowestScore = 0;
+        }
 
         return {
-          content: `Team of ${dids.length} agents: avg score ${avg.toFixed(3)}, weakest: ${lowestAgent}`,
+          content: `Team of ${dids.length} agents (${successCount} resolved): avg score ${avg.toFixed(3)}, weakest: ${lowestAgent || "n/a"}`,
           data: {
             team_size: dids.length,
+            resolved: successCount,
+            failed: dids.length - successCount,
             average_score: Number(avg.toFixed(3)),
             lowest_score: Number(lowestScore.toFixed(3)),
             lowest_agent: lowestAgent,
@@ -265,11 +295,11 @@ const plugin = definePlugin({
         const config = await getConfig();
 
         try {
-          const ownRep = await avpFetch(ctx, config, `/v1/reputation/${agent_did}`);
+          const ownRep = await avpFetch(ctx, config, `/v1/reputation/${encodeDid(agent_did)}`);
 
           let velocity: any = {};
           try {
-            velocity = await avpFetch(ctx, config, `/v1/reputation/${agent_did}/velocity`);
+            velocity = await avpFetch(ctx, config, `/v1/reputation/${encodeDid(agent_did)}/velocity`);
           } catch {
             // velocity endpoint may not be available
           }

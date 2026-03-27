@@ -8,6 +8,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "dev": "tsc --watch",
+    "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -17,7 +18,8 @@
   "devDependencies": {
     "@paperclipai/plugin-sdk": "^2026.318.0",
     "@paperclipai/shared": "^2026.318.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.2"
   },
   "files": [
     "dist/"
