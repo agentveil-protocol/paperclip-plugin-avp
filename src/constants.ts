@@ -1,5 +1,5 @@
 export const PLUGIN_ID = "paperclip-plugin-avp";
-export const PLUGIN_VERSION = "1.0.0";
+export const PLUGIN_VERSION = "1.0.1";
 
 export const TOOL_NAMES = {
   checkReputation: "avp_check_reputation",

@@ -21,6 +21,7 @@ const manifest: PaperclipPluginManifestV1 = {
     "plugin.state.write",
     "agents.read",
     "companies.read",
+    "jobs.schedule",
   ],
 
   entrypoints: {

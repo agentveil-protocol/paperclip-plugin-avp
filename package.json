@@ -1,6 +1,6 @@
 {
   "name": "paperclip-plugin-avp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Trust and reputation layer for Paperclip agents via Agent Veil Protocol",
   "type": "module",
   "main": "./dist/index.js",
