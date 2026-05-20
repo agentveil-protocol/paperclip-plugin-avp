@@ -40,8 +40,8 @@ After installing, configure in your Paperclip dashboard:
 ## Links
 
 - AVP Protocol: [agentveil.dev](https://agentveil.dev)
-- AVP SDK (Python): `pip install agentveil`
-- AVP GitHub: [github.com/agentveil-protocol/avp-sdk](https://github.com/agentveil-protocol/avp-sdk)
+- AgentVeil SDK (Python): `pip install agentveil`
+- AVP GitHub: [github.com/agentveil-protocol/agentveil-sdk](https://github.com/agentveil-protocol/agentveil-sdk)
 
 ## License
 
