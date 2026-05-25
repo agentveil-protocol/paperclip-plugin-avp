@@ -49,7 +49,7 @@ const plugin = definePlugin({
       TOOL_NAMES.checkReputation,
       {
         displayName: "AVP Check Reputation",
-        description: "Check an agent's trust score on Agent Veil Protocol.",
+        description: "Check an agent's advisory reputation signal on AgentVeil.",
         parametersSchema: {
           type: "object",
           properties: {
@@ -85,7 +85,7 @@ const plugin = definePlugin({
       TOOL_NAMES.shouldDelegate,
       {
         displayName: "AVP Should Delegate",
-        description: "Decide whether to delegate to an agent based on AVP reputation.",
+        description: "Return an advisory delegation recommendation based on AgentVeil reputation signals.",
         parametersSchema: {
           type: "object",
           properties: {
@@ -141,7 +141,7 @@ const plugin = definePlugin({
       TOOL_NAMES.logInteraction,
       {
         displayName: "AVP Log Interaction",
-        description: "Log a signed attestation after interacting with another agent.",
+        description: "Record an interaction signal with another agent.",
         parametersSchema: {
           type: "object",
           properties: {
@@ -194,7 +194,7 @@ const plugin = definePlugin({
       TOOL_NAMES.evaluateTeam,
       {
         displayName: "AVP Evaluate Team",
-        description: "Batch-check trust scores for all agents in a company.",
+        description: "Batch-check advisory reputation signals for all agents in a company.",
         parametersSchema: {
           type: "object",
           properties: {
@@ -266,7 +266,7 @@ const plugin = definePlugin({
       TOOL_NAMES.heartbeatReport,
       {
         displayName: "AVP Heartbeat Report",
-        description: "Generate a trust report at the end of a heartbeat cycle.",
+        description: "Generate an advisory status report at the end of a heartbeat cycle.",
         parametersSchema: {
           type: "object",
           properties: {
