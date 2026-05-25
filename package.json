@@ -1,7 +1,7 @@
 {
   "name": "paperclip-plugin-avp",
   "version": "1.0.1",
-  "description": "Trust and reputation layer for Paperclip agents via Agent Veil Protocol",
+  "description": "Advisory AgentVeil action-control signals and reputation tools for Paperclip agent workflows.",
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
@@ -29,16 +29,15 @@
     "worker": "./dist/worker.js"
   },
   "keywords": [
+    "agentveil",
     "paperclip",
     "plugin",
     "avp",
-    "trust",
+    "action-control",
+    "proof",
     "reputation",
-    "agent",
-    "identity",
-    "did",
-    "eigentrust",
-    "attestation"
+    "delegation",
+    "agent"
   ],
   "author": "AgentVeil Protocol",
   "license": "MIT",

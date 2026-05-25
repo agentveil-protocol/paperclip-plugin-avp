@@ -5,11 +5,11 @@ const manifest: PaperclipPluginManifestV1 = {
   id: PLUGIN_ID,
   apiVersion: 1,
   version: PLUGIN_VERSION,
-  displayName: "AVP Trust & Reputation",
+  displayName: "AgentVeil Advisory Signals",
   description:
-    "Adds trust verification, reputation scoring, and signed attestations " +
-    "between agents via Agent Veil Protocol. DID identity, EigenTrust reputation, " +
-    "peer-to-peer attestations.",
+    "Adds AgentVeil advisory reputation and delegation signals to Paperclip workflows, " +
+    "with positioning for external action-control decisions and proof references " +
+    "around high-risk agent actions.",
   author: "AgentVeil Protocol",
   categories: ["connector"],
 
@@ -45,7 +45,7 @@ const manifest: PaperclipPluginManifestV1 = {
       minDelegationScore: {
         type: "number",
         title: "Minimum Delegation Score",
-        description: "Default minimum reputation score (0.0-1.0) for delegation approval",
+        description: "Default minimum reputation score (0.0-1.0) for advisory delegation recommendations",
         default: 0.5,
       },
     },
@@ -57,9 +57,9 @@ const manifest: PaperclipPluginManifestV1 = {
       name: TOOL_NAMES.checkReputation,
       displayName: "AVP Check Reputation",
       description:
-        "Check an agent's trust score on Agent Veil Protocol. " +
+        "Check an agent's advisory reputation signal on AgentVeil. " +
         "Returns score (0-1), confidence, and interpretation. " +
-        "Use before delegating tasks to verify agent reliability.",
+        "Use before delegating tasks as a decision input.",
       parametersSchema: {
         type: "object",
         properties: {
@@ -75,8 +75,8 @@ const manifest: PaperclipPluginManifestV1 = {
       name: TOOL_NAMES.shouldDelegate,
       displayName: "AVP Should Delegate",
       description:
-        "Decide whether to delegate a task to an agent based on their " +
-        "AVP reputation. Returns yes/no decision with reasoning.",
+        "Return an advisory delegation recommendation based on AgentVeil " +
+        "reputation signals, with reasoning.",
       parametersSchema: {
         type: "object",
         properties: {
@@ -86,7 +86,7 @@ const manifest: PaperclipPluginManifestV1 = {
           },
           min_score: {
             type: "number",
-            description: "Minimum reputation score (0.0-1.0) to approve delegation",
+            description: "Minimum reputation score (0.0-1.0) for the advisory delegation recommendation",
           },
         },
         required: ["did"],
@@ -96,8 +96,8 @@ const manifest: PaperclipPluginManifestV1 = {
       name: TOOL_NAMES.logInteraction,
       displayName: "AVP Log Interaction",
       description:
-        "Log an interaction with another agent as a signed attestation. " +
-        "Record positive, negative, or neutral outcomes after task completion.",
+        "Record an interaction signal with another agent. " +
+        "Log positive, negative, or neutral outcomes after task completion.",
       parametersSchema: {
         type: "object",
         properties: {
@@ -122,8 +122,8 @@ const manifest: PaperclipPluginManifestV1 = {
       name: TOOL_NAMES.evaluateTeam,
       displayName: "AVP Evaluate Team",
       description:
-        "Batch-check trust scores for all agents in a Paperclip company. " +
-        "Returns per-agent scores, team average, and weakest link.",
+        "Batch-check advisory reputation signals for all agents in a Paperclip company. " +
+        "Returns per-agent scores, team average, and lowest-scoring agent.",
       parametersSchema: {
         type: "object",
         properties: {
@@ -140,8 +140,8 @@ const manifest: PaperclipPluginManifestV1 = {
       name: TOOL_NAMES.heartbeatReport,
       displayName: "AVP Heartbeat Report",
       description:
-        "Generate a trust report at the end of a heartbeat cycle. " +
-        "Includes own reputation, velocity trend, and optional peer attestations.",
+        "Generate an advisory status report at the end of a heartbeat cycle. " +
+        "Includes own reputation, velocity trend, and optional peer interaction signals.",
       parametersSchema: {
         type: "object",
         properties: {
