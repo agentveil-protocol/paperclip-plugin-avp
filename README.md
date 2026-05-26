@@ -64,6 +64,14 @@ Installing this plugin does not automatically gate every agent action or generat
 
 Reputation signals should be treated as decision inputs, not absolute guarantees. Production deployments should choose thresholds and delegation policies based on their own risk model.
 
+## Runtime MCP proxy integration
+
+This plugin exposes advisory AgentVeil signals inside Paperclip workflows. It does not embed the AgentVeil runtime gate and does not automatically gate every Paperclip action.
+
+For the runtime MCP proxy integration with Paperclip-managed Claude and Codex agents, see the AgentVeil SDK Paperclip integration guide:
+
+- [AgentVeil SDK Paperclip integration guide](https://github.com/agentveil-protocol/agentveil-sdk/blob/main/docs/PAPERCLIP_INTEGRATION.md)
+
 ## Related projects
 
 - [AgentVeil SDK](https://github.com/agentveil-protocol/agentveil-sdk) - Python SDK for AgentVeil integrations.
