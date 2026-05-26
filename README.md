@@ -72,6 +72,8 @@ For the runtime MCP proxy integration with Paperclip-managed Claude and Codex ag
 
 - [AgentVeil SDK Paperclip integration guide](https://github.com/agentveil-protocol/agentveil-sdk/blob/main/docs/PAPERCLIP_INTEGRATION.md)
 
+The linked AgentVeil SDK guide also documents read-only local helper commands for this proxy path: `agentveil paperclip doctor` checks local readiness, and `agentveil paperclip init --dry-run` previews setup steps without writing Paperclip, Claude, or Codex configuration.
+
 ## Related projects
 
 - [AgentVeil SDK](https://github.com/agentveil-protocol/agentveil-sdk) - Python SDK for AgentVeil integrations.
