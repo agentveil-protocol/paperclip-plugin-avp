@@ -7,9 +7,8 @@ const manifest: PaperclipPluginManifestV1 = {
   version: PLUGIN_VERSION,
   displayName: "AgentVeil Advisory Signals",
   description:
-    "Adds AgentVeil advisory reputation and delegation signals to Paperclip workflows, " +
-    "with positioning for external action-control decisions and proof references " +
-    "around high-risk agent actions.",
+    "Adds AgentVeil advisory reputation and delegation signals to Paperclip workflows. " +
+    "Runtime MCP proxy integration is documented separately in the AgentVeil SDK.",
   author: "AgentVeil Protocol",
   categories: ["connector"],
 
@@ -39,7 +38,7 @@ const manifest: PaperclipPluginManifestV1 = {
       avpAgentName: {
         type: "string",
         title: "Agent Name",
-        description: "Name used for AVP agent identity (keys stored at ~/.avp/agents/{name}.json)",
+        description: "Agent label used for AgentVeil configuration.",
         default: "paperclip_agent",
       },
       minDelegationScore: {

@@ -1,12 +1,12 @@
 # AgentVeil for Paperclip
 
-AgentVeil for Paperclip adds advisory action-control signals to Paperclip agent workflows.
+AgentVeil for Paperclip exposes optional advisory reputation and delegation signals inside Paperclip workflows.
 
-Paperclip manages agent work. AgentVeil helps control and prove risky actions.
+Paperclip manages agent work. The external AgentVeil MCP proxy handles runtime control for MCP-routed tool calls.
 
-Paperclip manages agent work: companies, tasks, approvals, budgets, and operational flow. AgentVeil focuses on the execution boundary: helping decide which risky agent actions should run, which should require approval, and what proof should exist afterward.
+This plugin is the Paperclip-side advisory companion. It does not replace Paperclip governance, and it is not the AgentVeil MCP proxy.
 
-The current plugin exposes reputation and delegation signals that Paperclip workflows can use as advisory inputs. It does not embed the full AgentVeil runtime gate.
+The current plugin exposes reputation and delegation signals that Paperclip workflows can use as advisory inputs.
 
 ## What this plugin does today
 
@@ -22,14 +22,14 @@ The current release exposes advisory AgentVeil signals. These signals can inform
 
 ## Why it matters
 
-Agent teams need more than execution logs. Before a workflow delegates or runs risky work, the system should be able to ask:
+Agent teams need more than execution logs. Before a workflow delegates work, the system should be able to ask:
 
 - Is this agent known?
-- Is this action within the expected risk boundary?
-- Should this action remain automatic or require approval?
-- What proof reference should exist afterward?
+- Is there a useful reputation signal?
+- Does the delegation recommendation clear the configured threshold?
+- What interaction signal should be recorded afterward?
 
-This plugin currently contributes advisory reputation and delegation signals for those questions. Future releases may connect Paperclip workflows to external AgentVeil gate decisions and proof references. The current plugin does not embed the AgentVeil runtime gate.
+This plugin contributes advisory reputation and delegation signals for those questions. Runtime control for MCP-routed tool calls lives in the external AgentVeil MCP proxy, documented separately in the AgentVeil SDK.
 
 ## Install
 
@@ -58,15 +58,15 @@ Configure the plugin in the Paperclip dashboard after installation.
 
 This plugin is not a replacement for Paperclip governance, approvals, budgets, logs, or rollback.
 
-It is not the full AgentVeil runtime gate embedded inside Paperclip.
+It is not the AgentVeil MCP proxy and does not enforce runtime controls inside Paperclip.
 
-Installing this plugin does not automatically gate every agent action or generate proof packets for every workflow. The current release exposes advisory reputation and delegation signals.
+Installing this plugin only adds advisory reputation and delegation tools. It does not change Paperclip's execution path.
 
 Reputation signals should be treated as decision inputs, not absolute guarantees. Production deployments should choose thresholds and delegation policies based on their own risk model.
 
 ## Runtime MCP proxy integration
 
-This plugin exposes advisory AgentVeil signals inside Paperclip workflows. It does not embed the AgentVeil runtime gate and does not automatically gate every Paperclip action.
+This plugin exposes advisory AgentVeil signals inside Paperclip workflows. Runtime control is handled by the external AgentVeil MCP proxy, not by this plugin.
 
 For the runtime MCP proxy integration with Paperclip-managed Claude and Codex agents, see the AgentVeil SDK Paperclip integration guide:
 
@@ -76,7 +76,7 @@ For the runtime MCP proxy integration with Paperclip-managed Claude and Codex ag
 
 - [AgentVeil SDK](https://github.com/agentveil-protocol/agentveil-sdk) - Python SDK for AgentVeil integrations.
 - [Lurkr](https://github.com/agentveil-protocol/lurkr) - local-only pre-deploy scanner for risky AI-agent capability surfaces.
-- [AgentVeil Protocol](https://agentveil.dev) - action-control infrastructure for autonomous agents.
+- [AgentVeil Protocol](https://agentveil.dev) - external runtime-control infrastructure for autonomous agents.
 
 ## License
 
